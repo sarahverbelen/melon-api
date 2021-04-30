@@ -15,3 +15,4 @@ This project was created as the Final Work of Sarah Verbelen for the bachelor Mu
 * [Pymongo](https://pymongo.readthedocs.io/en/stable/)
 * [MongoDB](https://www.mongodb.com/)
 * [Stackoverflow](https://stackoverflow.com/)
+* [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#)

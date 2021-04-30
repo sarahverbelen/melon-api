@@ -1,20 +1,20 @@
 import flask
 import json
 from bson import ObjectId
+from bs4 import Tag
 
 import dataFunctions
 import mongo
+import record
 
 from errors import NoEmailException
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-
-
 class JSONEncoder(json.JSONEncoder): # found here https://stackoverflow.com/questions/16586180/typeerror-objectid-is-not-json-serializable
     def default(self, o):
-        if isinstance(o, ObjectId):
+        if isinstance(o, ObjectId) or isinstance(o, Tag):
             return str(o)
 
         return json.JSONEncoder.default(self, o)
@@ -33,8 +33,13 @@ def save():
     return json.dumps(dataFunctions.saveUser(flask.request.form), cls=JSONEncoder)
 
 # GET USER BY ID
-@app.route('/user/<id>')
+@app.route('/user/<id>', methods=['GET'])
 def getUserById(id):
     return json.dumps(dataFunctions.getUserById(id),  cls=JSONEncoder)
+
+# SAVE RECORDS
+@app.route('/record', methods=['POST'])
+def saveRecord():
+    return json.dumps(dataFunctions.saveRecords(flask.request.form),  cls=JSONEncoder)
 
 app.run()

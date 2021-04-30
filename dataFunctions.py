@@ -2,6 +2,7 @@ from bson.objectid import ObjectId
 
 import mongo
 import validation
+import record
 from errors import NotFoundException
 
 def saveUser(object):
@@ -16,3 +17,25 @@ def getUserById(id):
 		raise NotFoundException()
 	else:
 		return user
+
+def saveRecords(object):
+	html = object.to_dict()['html']
+	source = object.to_dict()['source']
+
+	records = []
+	for post in record.split(html):
+		print(post)
+		records.append(saveRecord(post, source))
+
+	return records
+
+
+def saveRecord(html, source):
+	newRecord = { # TODO: add userId, createdAt
+		'sentiment': record.analyse(html),
+		'keywords': record.analyseKeywords(html),
+		'emotion': record.analyseEmotion(html),
+		'source': source
+	}
+	mongo.db.records.insert_one(newRecord)
+	return newRecord
