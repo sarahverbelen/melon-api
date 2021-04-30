@@ -1,14 +1,20 @@
 import re
 
 import mongo
-from errors import NoEmailException
+from errors import NoEmailException, InvalidEmailException
+
+emailRegex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
 
 def saveUser(object):
 	user = object.to_dict()
+	print(checkEmail(user))
 
-	if hasattr(user, 'email'):
-	# todo: check if email is valid
-		mongo.db.users.insert_one(user)
+def checkEmail(user):
+	if 'email' in user:
+		if re.search(emailRegex, user['email']):
+		 	# mongo.db.users.insert_one(user)
+			return 'email ok'
+		else:
+		 	raise InvalidEmailException
 	else:
 		raise NoEmailException
-	
