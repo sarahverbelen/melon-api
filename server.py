@@ -27,10 +27,14 @@ def home():
 def test():
 	return json.dumps(mongo.db.users.find_one(), cls=JSONEncoder)
 
-# SAVE USER ROUTE
+# SAVE USER
 @app.route('/user', methods=['POST'])
 def save():
-    dataFunctions.saveUser(flask.request.form)
-    return flask.request.form
+    return json.dumps(dataFunctions.saveUser(flask.request.form), cls=JSONEncoder)
+
+# GET USER BY ID
+@app.route('/user/<id>')
+def getUserById(id):
+    return json.dumps(dataFunctions.getUserById(id),  cls=JSONEncoder)
 
 app.run()
