@@ -34,19 +34,19 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "marianne@gmail.com",
+							"value": "sarah@gmail.com",
 							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "test",
-							"type": "text",
-							"disabled": true
 						},
 						{
 							"key": "name",
-							"value": "Marianne",
+							"value": "Sarah",
 							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -70,7 +70,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/user/608bd014c0d3dd6a7c4db586",
+					"raw": "http://localhost:5000/user/608fb0824832f22bdd3542f1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -78,7 +78,7 @@
 					"port": "5000",
 					"path": [
 						"user",
-						"608bd014c0d3dd6a7c4db586"
+						"608fb0824832f22bdd3542f1"
 					]
 				}
 			},
@@ -113,6 +113,28 @@
 					"port": "5000",
 					"path": [
 						"record"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get records by userId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/user/608fb0824832f22bdd3542f1/record/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"608fb0824832f22bdd3542f1",
+						"record",
+						""
 					]
 				}
 			},

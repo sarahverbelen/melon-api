@@ -1,4 +1,5 @@
 from bson.objectid import ObjectId
+from datetime import datetime
 
 import mongo
 import validation
@@ -31,11 +32,72 @@ def saveRecords(object):
 
 
 def saveRecord(html, source):
-	newRecord = { # TODO: add userId, createdAt
+	newRecord = { # TODO: add createdAt
 		'sentiment': record.analyse(html),
 		'keywords': record.analyseKeywords(html),
 		'emotion': record.analyseEmotion(html),
-		'source': source
+		'source': source,
+		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication...
+		'createdAt': datetime.now()
 	}
 	mongo.db.records.insert_one(newRecord)
 	return newRecord
+
+def getUserRecords(id, filter):
+	records = filterRecords(id, filter)
+
+	return countRecords(records)
+
+def filterRecords(id, filter):
+	resultSet = []
+
+	for record in mongo.db.records.find({'userId': id}):
+		if filter == 'today' and record['createdAt'].date() == datetime.today().date():
+			resultSet.append(record)
+
+	return resultSet
+
+def countRecords(records):
+	result = {
+		# absolute numbers
+		'positiveCount': 0,
+		'negativeCount': 0,
+		'neutralCount': 0,
+		'emotionsCount': {
+			'happy': 0,
+			'angry': 0
+		},
+		# numbers per keyword
+		'keywordCount': {}
+	}
+
+	for record in records:
+		# SENTIMENT
+		if record['sentiment'] == 0:
+			result['neutralCount'] += 1
+		if record['sentiment'] == -1:
+			result['negativeCount'] += 1
+		if record['sentiment'] == 1:
+			result['positiveCount'] += 1
+
+		# EMOTION
+		result['emotionsCount'][record['emotion']] += 1
+
+		# KEYWORDS...
+		for word in record['keywords']:
+			if word not in result['keywordCount']:
+				result['keywordCount'][word] = {
+					'count': 0,
+					'negativeCount': 0,
+					'positiveCount': 0,
+					'neutralCount': 0
+				}
+			result['keywordCount'][word]['count'] += 1
+			if record['sentiment'] == 0:
+				result['keywordCount'][word]['neutralCount'] += 1
+			if record['sentiment'] == -1:
+				result['keywordCount'][word]['negativeCount'] += 1
+			if record['sentiment'] == 1:
+				result['keywordCount'][word]['positiveCount'] += 1
+			
+	return result

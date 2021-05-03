@@ -10,7 +10,7 @@ def split(html):
 
 def analyse(html):
 	# TODO: analysis
-	analysis = random.uniform(-1, 1) # temporary solution: random "analysis"
+	analysis = round(random.uniform(-1, 1)) # temporary solution: random "analysis"
 	return analysis
 
 def analyseKeywords(html):
