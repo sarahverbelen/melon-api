@@ -32,7 +32,7 @@ def saveRecords(object):
 
 
 def saveRecord(html, source):
-	newRecord = { # TODO: add createdAt
+	newRecord = {
 		'sentiment': record.analyse(html),
 		'keywords': record.analyseKeywords(html),
 		'emotion': record.analyseEmotion(html),
@@ -52,8 +52,18 @@ def filterRecords(id, filter):
 	resultSet = []
 
 	for record in mongo.db.records.find({'userId': id}):
+		year, week, day_of_week = record['createdAt'].date().isocalendar()
+		thisYear, thisWeek, thisDay_of_week =  datetime.today().date().isocalendar()
+
 		if filter == 'today' and record['createdAt'].date() == datetime.today().date():
 			resultSet.append(record)
+		if filter == 'week' and week == thisWeek:
+			resultSet.append(record)
+		if filter == 'year' and year == thisYear:
+			resultSet.append(record)
+		if filter == 'all':
+			resultSet.append(record)
+		# TODO: filters for previous weeks / years / days / months + month filter
 
 	return resultSet
 
