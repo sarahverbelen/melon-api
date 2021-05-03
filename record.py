@@ -5,8 +5,9 @@ import random
 def split(html):
 	soup = BeautifulSoup(html, 'html.parser')
 	# temporary solution: this will need to be different based on the social media website that's the source etc etc
-	ps = soup.find_all('p')
-	return ps
+	posts = soup.find_all('h3')
+	print(posts)
+	return posts
 
 def analyse(html):
 	# TODO: analysis

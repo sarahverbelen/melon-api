@@ -1,4 +1,5 @@
 import flask
+from flask_cors import CORS
 import json
 from bson import ObjectId
 from bs4 import Tag
@@ -11,6 +12,7 @@ import record
 from errors import NoEmailException
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 class JSONEncoder(json.JSONEncoder): # found here https://stackoverflow.com/questions/16586180/typeerror-objectid-is-not-json-serializable

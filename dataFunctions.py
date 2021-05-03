@@ -25,7 +25,6 @@ def saveRecords(object):
 
 	records = []
 	for post in record.split(html):
-		print(post)
 		records.append(saveRecord(post, source))
 
 	return records
@@ -40,7 +39,7 @@ def saveRecord(html, source):
 		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication...
 		'createdAt': datetime.now()
 	}
-	mongo.db.records.insert_one(newRecord)
+	# mongo.db.records.insert_one(newRecord)
 	return newRecord
 
 def getUserRecords(id, filter):
