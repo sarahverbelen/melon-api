@@ -39,7 +39,7 @@ def saveRecord(html, source):
 		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication...
 		'createdAt': datetime.now()
 	}
-	# mongo.db.records.insert_one(newRecord)
+	mongo.db.records.insert_one(newRecord)
 	return newRecord
 
 def getUserRecords(id, filter):
@@ -77,7 +77,25 @@ def countRecords(records):
 			'angry': 0
 		},
 		# numbers per keyword
-		'keywordCount': {}
+		'keywordCount': {},
+		#numbers per website
+		'websiteCount': {
+			'facebook': {
+				'positive': 0,
+				'neutral': 0,
+				'negative': 0
+			},
+			'reddit': {
+				'positive': 0,
+				'neutral': 0,
+				'negative': 0
+			},
+			'twitter': {
+				'positive': 0,
+				'neutral': 0,
+				'negative': 0
+			}
+		}
 	}
 
 	for record in records:
@@ -92,7 +110,7 @@ def countRecords(records):
 		# EMOTION
 		result['emotionsCount'][record['emotion']] += 1
 
-		# KEYWORDS...
+		# KEYWORDS
 		for word in record['keywords']:
 			if word not in result['keywordCount']:
 				result['keywordCount'][word] = {
@@ -108,5 +126,14 @@ def countRecords(records):
 				result['keywordCount'][word]['negativeCount'] += 1
 			if record['sentiment'] == 1:
 				result['keywordCount'][word]['positiveCount'] += 1
+
+		# WEBSITES
+		if record['sentiment'] == 0:
+			result['websiteCount'][record['source']]['neutral'] += 1
+		if record['sentiment'] == -1:
+			result['websiteCount'][record['source']]['negative'] += 1
+		if record['sentiment'] == 1:
+			result['websiteCount'][record['source']]['positive'] += 1
+		
 			
 	return result
