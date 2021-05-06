@@ -50,19 +50,29 @@ def getUserRecords(id, filter):
 def filterRecords(id, filter):
 	resultSet = []
 
-	for record in mongo.db.records.find({'userId': id}):
-		year, week, day_of_week = record['createdAt'].date().isocalendar()
-		thisYear, thisWeek, thisDay_of_week =  datetime.today().date().isocalendar()
+	thisDay = datetime.today().date().day
+	thisMonth = datetime.today().date().month
+	thisYear = datetime.today().date().year
 
-		if filter == 'today' and record['createdAt'].date() == datetime.today().date():
+	if filter['day'] == None and filter['month'] == None and filter['year'] == None:
+		# Only give a default day and week if none of the other filters are set
+		filter['day'] = str(thisDay)
+
+	if filter['month'] == None and filter['year'] == None:
+		# Give a default month if the year is not set
+		filter['month'] = str(thisMonth)
+	
+	if filter['year'] == None:
+		# Always give a default year
+		filter['year'] = str(thisYear)
+
+	for record in mongo.db.records.find({'userId': id}):
+		day = record['createdAt'].date().day
+		month = record['createdAt'].date().month
+		year = record['createdAt'].date().year
+
+		if (filter['day'] == str(day) or filter['day'] == None) and (filter['month'] == str(month) or filter['month'] == None) and filter['year'] == str(year):
 			resultSet.append(record)
-		if filter == 'week' and week == thisWeek:
-			resultSet.append(record)
-		if filter == 'year' and year == thisYear:
-			resultSet.append(record)
-		if filter == 'all':
-			resultSet.append(record)
-		# TODO: filters for previous weeks / years / days / months + month filter
 
 	return resultSet
 

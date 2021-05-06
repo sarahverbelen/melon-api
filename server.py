@@ -45,14 +45,19 @@ def getUserById(id):
 def saveRecord():
     return json.dumps(dataFunctions.saveRecords(flask.request.form),  cls=JSONEncoder)
 
-# GET THE RECORDS OF A USER WITH DEFAULT FILTER (only from today)
+# GET THE RECORDS OF A USER WITH FILTER (from querystring)
 @app.route('/user/<id>/record/')
 def getUserRecords(id):
-    return json.dumps(dataFunctions.getUserRecords(id, 'today'),  cls=JSONEncoder)
-
-# GET THE RECORDS OF A USER BASED ON A FILTER
-@app.route('/user/<id>/record/<filter>')
-def getUserRecordsWithFilter(id, filter):
+    filter = {
+        'day': flask.request.args.get('day'),
+        'month': flask.request.args.get('month'),
+        'year': flask.request.args.get('year'),
+    }
+    # if the querystring is empty, it will give the results of today by default
+    # if only the day is given, it will give the results of that day this month
+    # if only the month is given, it will give the results of this month
+    # if only the year is given, it will give the results of this year
     return json.dumps(dataFunctions.getUserRecords(id, filter),  cls=JSONEncoder)
+
 
 app.run()
