@@ -52,12 +52,13 @@ def getUserRecords(id):
         'day': flask.request.args.get('day'),
         'month': flask.request.args.get('month'),
         'year': flask.request.args.get('year'),
+        'week': flask.request.args.get('week')
     }
     # if the querystring is empty, it will give the results of today by default
     # if only the day is given, it will give the results of that day this month
     # if only the month is given, it will give the results of this month
     # if only the year is given, it will give the results of this year
+    # if week is 'true', it will give the results for this week, seperated by day (and in total)
     return json.dumps(dataFunctions.getUserRecords(id, filter),  cls=JSONEncoder)
-
 
 app.run()

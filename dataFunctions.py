@@ -1,5 +1,5 @@
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import mongo
 import validation
@@ -45,7 +45,7 @@ def saveRecord(html, source):
 def getUserRecords(id, filter):
 	records = filterRecords(id, filter)
 
-	return countRecords(records)
+	return countRecords(records, filter['week'])
 
 def filterRecords(id, filter):
 	resultSet = []
@@ -66,17 +66,23 @@ def filterRecords(id, filter):
 		# Always give a default year
 		filter['year'] = str(thisYear)
 
-	for record in mongo.db.records.find({'userId': id}):
-		day = record['createdAt'].date().day
-		month = record['createdAt'].date().month
-		year = record['createdAt'].date().year
+	if filter['week'] == 'true':
+		dateWeekAgo = datetime.now() - timedelta(days=7)
+		for record in mongo.db.records.find({'userId': id}):
+			if dateWeekAgo <= record['createdAt']:
+				resultSet.append(record)
+	else:
+		for record in mongo.db.records.find({'userId': id}):
+			day = record['createdAt'].date().day
+			month = record['createdAt'].date().month
+			year = record['createdAt'].date().year
 
-		if (filter['day'] == str(day) or filter['day'] == None) and (filter['month'] == str(month) or filter['month'] == None) and filter['year'] == str(year):
-			resultSet.append(record)
+			if (filter['day'] == str(day) or filter['day'] == None) and (filter['month'] == str(month) or filter['month'] == None) and filter['year'] == str(year):
+				resultSet.append(record)
 
 	return resultSet
 
-def countRecords(records):
+def countRecords(records, week):
 	result = {
 		# absolute numbers
 		'positiveCount': 0,
@@ -107,6 +113,9 @@ def countRecords(records):
 			}
 		}
 	}
+
+	if week == 'true':
+		result['perDayCount'] = {}
 
 	for record in records:
 		# SENTIMENT
@@ -144,6 +153,22 @@ def countRecords(records):
 			result['websiteCount'][record['source']]['negative'] += 1
 		if record['sentiment'] == 1:
 			result['websiteCount'][record['source']]['positive'] += 1
+
+		# WEEK: SEPERATED BY DAY
+		if week == 'true':
+			date = str(record['createdAt'].date().day) + '/' + str(record['createdAt'].date().month)
+			if date not in result['perDayCount']:
+				result['perDayCount'][date] = {
+					'positive': 0,
+					'negative': 0,
+					'neutral': 0
+				}
+			if record['sentiment'] == 0:
+				result['perDayCount'][date]['neutral'] += 1
+			if record['sentiment'] == -1:
+				result['perDayCount'][date]['negative'] += 1
+			if record['sentiment'] == 1:
+				result['perDayCount'][date]['positive'] += 1
 		
 			
 	return result
