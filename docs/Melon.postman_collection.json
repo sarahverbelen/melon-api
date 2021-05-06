@@ -124,7 +124,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/user/608fb0824832f22bdd3542f1/record/",
+					"raw": "http://localhost:5000/user/608fb0824832f22bdd3542f1/record/?month=5&year=2020",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -135,6 +135,21 @@
 						"608fb0824832f22bdd3542f1",
 						"record",
 						""
+					],
+					"query": [
+						{
+							"key": "day",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "month",
+							"value": "5"
+						},
+						{
+							"key": "year",
+							"value": "2020"
+						}
 					]
 				}
 			},
