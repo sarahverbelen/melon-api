@@ -45,7 +45,7 @@ def saveRecord(html, source):
 def getUserRecords(id, filter):
 	records = filterRecords(id, filter)
 
-	return countRecords(records, filter['week'])
+	return countRecords(records, filter['time'])
 
 def filterRecords(id, filter):
 	resultSet = []
@@ -55,7 +55,7 @@ def filterRecords(id, filter):
 	thisYear = datetime.today().date().year
 
 	if filter['day'] == None and filter['month'] == None and filter['year'] == None:
-		# Only give a default day and week if none of the other filters are set
+		# Only give a default day if none of the other filters are set
 		filter['day'] = str(thisDay)
 
 	if filter['month'] == None and filter['year'] == None:
@@ -66,7 +66,10 @@ def filterRecords(id, filter):
 		# Always give a default year
 		filter['year'] = str(thisYear)
 
-	if filter['week'] == 'true':
+	if filter['time'] == 'alltime':
+		for record in mongo.db.records.find({'userId': id}):
+			resultSet.append(record)
+	elif filter['time'] == 'week':
 		dateWeekAgo = datetime.now() - timedelta(days=7)
 		for record in mongo.db.records.find({'userId': id}):
 			if dateWeekAgo <= record['createdAt']:
@@ -82,7 +85,7 @@ def filterRecords(id, filter):
 
 	return resultSet
 
-def countRecords(records, week):
+def countRecords(records, time):
 	result = {
 		# absolute numbers
 		'positiveCount': 0,
@@ -114,7 +117,7 @@ def countRecords(records, week):
 		}
 	}
 
-	if week == 'true':
+	if time == 'week':
 		result['perDayCount'] = {}
 
 	for record in records:
@@ -155,7 +158,7 @@ def countRecords(records, week):
 			result['websiteCount'][record['source']]['positive'] += 1
 
 		# WEEK: SEPERATED BY DAY
-		if week == 'true':
+		if time == 'week':
 			date = str(record['createdAt'].date().day) + '/' + str(record['createdAt'].date().month)
 			if date not in result['perDayCount']:
 				result['perDayCount'][date] = {
