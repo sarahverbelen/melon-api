@@ -24,7 +24,7 @@ def saveRecords(object):
 	source = object.to_dict()['source']
 
 	records = []
-	for post in record.split(html):
+	for post in record.split(html, source):
 		records.append(saveRecord(post, source))
 
 	return records

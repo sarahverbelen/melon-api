@@ -2,11 +2,20 @@
 from bs4 import BeautifulSoup
 import random
 
-def split(html):
+def split(html, source):
 	soup = BeautifulSoup(html, 'html.parser')
 	# temporary solution: this will need to be different based on the social media website that's the source etc etc
-	posts = soup.find_all('h3')
-	print(posts)
+
+	posts = []
+
+	if source == 'reddit':
+		posts = soup.find_all('h3')
+	if source == 'twitter':
+		allPosts = soup.find_all('span')
+		for post in allPosts:
+			if len(post.text) > 20:
+				posts.append(post)
+				print(post.text)
 	return posts
 
 def analyse(html):
