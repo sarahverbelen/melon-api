@@ -70,9 +70,13 @@ def filterRecords(id, filter):
 		for record in mongo.db.records.find({'userId': id}):
 			resultSet.append(record)
 	elif filter['time'] == 'week':
-		dateWeekAgo = datetime.now() - timedelta(days=7)
+		amountOfDays = 7
+		if filter['pastweek'] != None:
+			amountOfDays = (int(filter['pastweek']) * 7) + 7
+		dateWeeksAgo = datetime.now() - timedelta(days=amountOfDays)
+		dateWeekLater = datetime.now() - timedelta(days=(amountOfDays - 7))
 		for record in mongo.db.records.find({'userId': id}):
-			if dateWeekAgo <= record['createdAt']:
+			if dateWeeksAgo.date() <= record['createdAt'].date() and dateWeekLater.date() >= record['createdAt'].date():
 				resultSet.append(record)
 	else:
 		for record in mongo.db.records.find({'userId': id}):

@@ -52,7 +52,8 @@ def getUserRecords(id):
         'day': flask.request.args.get('day'),
         'month': flask.request.args.get('month'),
         'year': flask.request.args.get('year'),
-        'time': flask.request.args.get('time')
+        'time': flask.request.args.get('time'),
+        'pastweek': flask.request.args.get('pastweek')
     }
     # if the querystring is empty, it will give the results of today by default
     # if only the day is given, it will give the results of that day this month
@@ -60,6 +61,7 @@ def getUserRecords(id):
     # if only the year is given, it will give the results of this year
     # if time is 'week', it will give the results for this week, seperated by day (and in total)
     # if time is 'alltime', it will give the results for alltime
+    # the number in 'pastweek' determines how many weeks in the past the api will return
     return json.dumps(dataFunctions.getUserRecords(id, filter),  cls=JSONEncoder)
 
 app.run()
