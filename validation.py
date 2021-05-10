@@ -1,6 +1,6 @@
 import re
 
-from errors import NoEmailException, InvalidEmailException, NoNameException
+from errors import NoEmailException, InvalidEmailException, NoPasswordException
 
 emailRegex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
 
@@ -13,8 +13,8 @@ def checkEmail(user):
 	else:
 		raise NoEmailException
 
-def checkName(user):
-	if 'name' in user:
+def checkPassword(user):
+	if 'password' in user:
 		return True
 	else: 
-		raise NoNameException
+		raise NoPasswordException

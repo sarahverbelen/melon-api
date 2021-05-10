@@ -8,6 +8,7 @@ from datetime import datetime
 import dataFunctions
 import mongo
 import record
+import auth
 
 from errors import NoEmailException
 
@@ -33,12 +34,12 @@ def test():
 # SAVE USER
 @app.route('/user', methods=['POST'])
 def save():
-    return json.dumps(dataFunctions.saveUser(flask.request.form), cls=JSONEncoder)
+    return json.dumps(auth.saveUser(flask.request.form), cls=JSONEncoder)
 
 # GET USER BY ID
 @app.route('/user/<id>', methods=['GET'])
 def getUserById(id):
-    return json.dumps(dataFunctions.getUserById(id),  cls=JSONEncoder)
+    return json.dumps(auth.getUserById(id),  cls=JSONEncoder)
 
 # SAVE RECORDS
 @app.route('/record', methods=['POST'])
