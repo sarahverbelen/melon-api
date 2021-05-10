@@ -1,6 +1,7 @@
 # this file will split the data into seperate records and then analyse these records based on our ai model
 from bs4 import BeautifulSoup
 import random
+import re
 
 def split(html, source):
 	soup = BeautifulSoup(html, 'html.parser')
@@ -29,13 +30,14 @@ def analyse(html):
 	text = html.get_text()
 	# do the analysis
 	analysis = 0
-	for word in text.split(' '):
+	textWithoutPunctuation = re.sub(r'[^\w\s]', '', text)
+	for word in textWithoutPunctuation.split():
 		if word.lower() in afinn:
 			value = afinn[word.lower()]
 			analysis = int(analysis) + int(value)
 	# collapse the number into 1, 0 or -1
 	sentiment = 0
-	print(text, analysis)
+	print(textWithoutPunctuation, analysis)
 	if analysis > 1:
 		sentiment = 1
 	if analysis < -1:
