@@ -18,3 +18,4 @@ You can find the Postman collection for this api in the `/docs` folder.
 * [MongoDB](https://www.mongodb.com/)
 * [Stackoverflow](https://stackoverflow.com/)
 * [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#)
+* [AFINN Wordlist](https://finnaarupnielsen.wordpress.com/2011/03/16/afinn-a-new-word-list-for-sentiment-analysis/)
