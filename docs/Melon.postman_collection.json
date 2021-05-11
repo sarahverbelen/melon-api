@@ -25,7 +25,7 @@
 			"response": []
 		},
 		{
-			"name": "Save User",
+			"name": "Register",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -34,7 +34,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "sarah@gmail.com",
+							"value": "ik@gmail.com",
 							"type": "text"
 						},
 						{
@@ -51,14 +51,14 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:5000/user",
+					"raw": "http://localhost:5000/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"user"
+						"register"
 					]
 				}
 			},
@@ -88,7 +88,13 @@
 			"name": "Save records",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjA4MTgxNjIsImlhdCI6MTYyMDczMTc2Miwic3ViIjoiNjA5YTNiYWUxN2RlMjZmODJkOWRhN2ZmIn0.tcjB9sKnlt1rEuvOkDJK7oW_VApM1CuVefjpvm8QLX0",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -122,17 +128,21 @@
 			"name": "Get records by userId",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjA4MTgxNjIsImlhdCI6MTYyMDczMTc2Miwic3ViIjoiNjA5YTNiYWUxN2RlMjZmODJkOWRhN2ZmIn0.tcjB9sKnlt1rEuvOkDJK7oW_VApM1CuVefjpvm8QLX0",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:5000/user/608fb0824832f22bdd3542f1/record/?month=5&year=2020",
+					"raw": "http://localhost:5000/record/?time=alltime",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"user",
-						"608fb0824832f22bdd3542f1",
 						"record",
 						""
 					],
@@ -144,11 +154,22 @@
 						},
 						{
 							"key": "month",
-							"value": "5"
+							"value": "5",
+							"disabled": true
 						},
 						{
 							"key": "year",
-							"value": "2020"
+							"value": "2020",
+							"disabled": true
+						},
+						{
+							"key": "pastweek",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "time",
+							"value": "alltime"
 						}
 					]
 				}
@@ -160,8 +181,23 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "test1234",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "sarah@gmail.com",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://localhost:5000/login?password=test1234&email=sarah@gmail.com",
+					"raw": "http://localhost:5000/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -169,16 +205,6 @@
 					"port": "5000",
 					"path": [
 						"login"
-					],
-					"query": [
-						{
-							"key": "password",
-							"value": "test1234"
-						},
-						{
-							"key": "email",
-							"value": "sarah@gmail.com"
-						}
 					]
 				}
 			},
