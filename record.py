@@ -37,7 +37,7 @@ def analyse(html):
 			analysis = int(analysis) + int(value)
 	# collapse the number into 1, 0 or -1
 	sentiment = 0
-	print(textWithoutPunctuation, analysis)
+	# print(textWithoutPunctuation, analysis)
 	if analysis > 1:
 		sentiment = 1
 	if analysis < -1:

@@ -20,3 +20,5 @@ You can find the Postman collection for this api in the `/docs` folder.
 * [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#)
 * [AFINN Wordlist](https://finnaarupnielsen.wordpress.com/2011/03/16/afinn-a-new-word-list-for-sentiment-analysis/)
 * [Flask Bcrypt](https://flask-bcrypt.readthedocs.io/en/0.7.1/)
+* [Token based authentication with flask](https://realpython.com/token-based-authentication-with-flask/)
+* [PyJWT](https://pyjwt.readthedocs.io/en/latest/)

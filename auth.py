@@ -1,8 +1,10 @@
 from bson.objectid import ObjectId
+import jwt
+import datetime
 
 import mongo
 import validation
-from errors import NotFoundException
+from errors import NotFoundException, WrongPasswordException
 
 def register(object, bcrypt):
 	user = object.to_dict()
@@ -11,8 +13,8 @@ def register(object, bcrypt):
 		# hash the password
 		user['password'] = bcrypt.generate_password_hash(user['password'])
 		# save to database
-		mongo.db.users.insert_one(user)
-		return 'succes'
+		userId = mongo.db.users.insert_one(user).inserted_id
+		return encodeAuthToken(userId)
 
 def getUserById(id):
 	# TODO: only for admin users (or one specific admin user at least)
@@ -32,6 +34,28 @@ def login(user, bcrypt):
 		else:
 			# check if password hash matches saved pashword hash
 			passwordMatch = bcrypt.check_password_hash(registeredUser['password'], user['password'])
-			print(passwordMatch)
-	# TODO: create JWT..
-	return 'succes'
+			if passwordMatch:
+				return encodeAuthToken(registeredUser['_id'])
+			else:
+				raise WrongPasswordException()
+
+def encodeAuthToken(id):
+	payload = {
+		'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+		'iat': datetime.datetime.utcnow(),
+		'sub': str(id)
+	}
+	return jwt.encode(
+		payload,
+		'Watermeloen is mijn favoriete meloen.',
+		algorithm='HS256'
+	)
+
+def decodeAuthToken(auth_token):
+	try:
+		payload = jwt.decode(auth_token, 'Watermeloen is mijn favoriete meloen.')
+		return payload['sub']
+	except jwt.ExpiredSignatureError:
+		return 'Signature expired. Please log in again.'
+	except jwt.InvalidTokenError:
+		return 'Invalid token. Please log in again.'

@@ -35,14 +35,14 @@ def test():
 	return json.dumps(mongo.db.users.find_one(), cls=JSONEncoder)
 
 # REGISTER
-@app.route('/user', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def save():
-    return json.dumps(auth.register(flask.request.form, bcrypt), cls=JSONEncoder)
+    return auth.register(flask.request.form, bcrypt)
 
 # LOGIN
 @app.route('/login', methods=['POST'])
 def login():
-    return json.dumps(auth.login(flask.request.form, bcrypt), cls=JSONEncoder)
+    return auth.login(flask.request.form, bcrypt)
 
 # GET USER BY ID
 @app.route('/user/<id>', methods=['GET'])
@@ -52,8 +52,9 @@ def getUserById(id):
 # SAVE RECORDS
 @app.route('/record', methods=['POST'])
 def saveRecord():
+    auth_header = flask.request.headers.get('Authorization')
     # TODO: only when logged in
-    return json.dumps(dataFunctions.saveRecords(flask.request.form),  cls=JSONEncoder)
+    return json.dumps(dataFunctions.saveRecords(flask.request.form, auth_header),  cls=JSONEncoder)
 
 # GET THE RECORDS OF A USER WITH FILTER (from querystring)
 @app.route('/user/<id>/record/')
