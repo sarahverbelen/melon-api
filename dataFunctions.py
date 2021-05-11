@@ -4,29 +4,31 @@ from datetime import datetime, timedelta
 import mongo
 import validation
 import record
-from errors import NotFoundException
+import auth
+from errors import NotFoundException, UnauthorizedException
 
-def saveRecords(object):
-	html = object.to_dict()['html']
-	source = object.to_dict()['source']
+def saveRecords(object, auth_header):
+		userId = auth.checkAuth(auth_header)
+		html = object.to_dict()['html']
+		source = object.to_dict()['source']
 
-	records = []
-	for post in record.split(html, source):
-		records.append(saveRecord(post, source))
+		records = []
+		for post in record.split(html, source):
+			records.append(saveRecord(post, source, userId))
 
-	return records
+		return records
 
 
-def saveRecord(html, source):
+def saveRecord(html, source, userId):
 	newRecord = {
 		'sentiment': record.analyse(html),
 		'keywords': record.analyseKeywords(html),
 		'emotion': record.analyseEmotion(html),
 		'source': source,
-		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication / JWT
+		'userId': userId,
 		'createdAt': datetime.now()
 	}
-	# mongo.db.records.insert_one(newRecord)
+	mongo.db.records.insert_one(newRecord)
 	return newRecord
 
 def getUserRecords(id, filter):

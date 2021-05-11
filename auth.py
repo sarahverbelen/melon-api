@@ -56,6 +56,14 @@ def decodeAuthToken(auth_token):
 		payload = jwt.decode(auth_token, 'Watermeloen is mijn favoriete meloen.')
 		return payload['sub']
 	except jwt.ExpiredSignatureError:
-		return 'Signature expired. Please log in again.'
+		raise jwt.ExpiredSignatureError
 	except jwt.InvalidTokenError:
-		return 'Invalid token. Please log in again.'
+		raise jwt.InvalidTokenError
+
+def checkAuth(auth_header):
+	if auth_header:
+		auth_token = auth_header.split(".")[1]
+		userId = decodeAuthToken(auth_header)
+		return userId
+	else:
+		raise UnauthorizedException()
