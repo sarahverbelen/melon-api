@@ -57,9 +57,9 @@ def saveRecord():
     return json.dumps(dataFunctions.saveRecords(flask.request.form, auth_header),  cls=JSONEncoder)
 
 # GET THE RECORDS OF A USER WITH FILTER (from querystring)
-@app.route('/user/<id>/record/')
-def getUserRecords(id):
-    # TODO: only when logged in (get id from auth)
+@app.route('/record/')
+def getUserRecords():
+    auth_header = flask.request.headers.get('Authorization')
     filter = {
         'day': flask.request.args.get('day'),
         'month': flask.request.args.get('month'),
@@ -74,6 +74,6 @@ def getUserRecords(id):
     # if time is 'week', it will give the results for this week, seperated by day (and in total)
     # if time is 'alltime', it will give the results for alltime
     # the number in 'pastweek' determines how many weeks in the past the api will return
-    return json.dumps(dataFunctions.getUserRecords(id, filter),  cls=JSONEncoder)
+    return json.dumps(dataFunctions.getUserRecords(filter, auth_header),  cls=JSONEncoder)
 
 app.run()

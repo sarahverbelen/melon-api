@@ -31,7 +31,8 @@ def saveRecord(html, source, userId):
 	mongo.db.records.insert_one(newRecord)
 	return newRecord
 
-def getUserRecords(id, filter):
+def getUserRecords(filter, auth_header):
+	id = auth.checkAuth(auth_header)
 	records = filterRecords(id, filter)
 
 	return countRecords(records, filter['time'])
