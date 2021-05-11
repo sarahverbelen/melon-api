@@ -7,8 +7,6 @@ You can find the Postman collection for this api in the `/docs` folder.
 
 ## How to run the API
 1. If you don't have python installed, [you can download the latest version here](https://www.python.org/downloads/)
-1. If you don't have pip installed, [make sure to install it first.](https://pip.pypa.io/en/stable/installing/)
-1. `pip install -r requirements.txt`: install the requirements 
 2. `python server.py`: starts a development build of the api on `http://localhost:5000`
 
 
