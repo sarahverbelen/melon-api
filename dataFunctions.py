@@ -23,7 +23,7 @@ def saveRecord(html, source):
 		'keywords': record.analyseKeywords(html),
 		'emotion': record.analyseEmotion(html),
 		'source': source,
-		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication...
+		'userId': '608fb0824832f22bdd3542f1', # TODO: get this from authentication / JWT
 		'createdAt': datetime.now()
 	}
 	# mongo.db.records.insert_one(newRecord)

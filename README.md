@@ -19,3 +19,4 @@ You can find the Postman collection for this api in the `/docs` folder.
 * [Stackoverflow](https://stackoverflow.com/)
 * [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#)
 * [AFINN Wordlist](https://finnaarupnielsen.wordpress.com/2011/03/16/afinn-a-new-word-list-for-sentiment-analysis/)
+* [Flask Bcrypt](https://flask-bcrypt.readthedocs.io/en/0.7.1/)

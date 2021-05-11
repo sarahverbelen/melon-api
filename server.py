@@ -1,5 +1,7 @@
 import flask
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
+
 import json
 from bson import ObjectId
 from bs4 import Tag
@@ -14,6 +16,7 @@ from errors import NoEmailException
 
 app = flask.Flask(__name__)
 CORS(app)
+bcrypt = Bcrypt(app)
 app.config["DEBUG"] = True
 
 class JSONEncoder(json.JSONEncoder): # found here https://stackoverflow.com/questions/16586180/typeerror-objectid-is-not-json-serializable
@@ -31,10 +34,15 @@ def home():
 def test():
 	return json.dumps(mongo.db.users.find_one(), cls=JSONEncoder)
 
-# SAVE USER
+# REGISTER
 @app.route('/user', methods=['POST'])
 def save():
-    return json.dumps(auth.saveUser(flask.request.form), cls=JSONEncoder)
+    return json.dumps(auth.register(flask.request.form, bcrypt), cls=JSONEncoder)
+
+# LOGIN
+@app.route('/login', methods=['POST'])
+def login():
+    return json.dumps(auth.login(flask.request.form, bcrypt), cls=JSONEncoder)
 
 # GET USER BY ID
 @app.route('/user/<id>', methods=['GET'])
@@ -44,11 +52,13 @@ def getUserById(id):
 # SAVE RECORDS
 @app.route('/record', methods=['POST'])
 def saveRecord():
+    # TODO: only when logged in
     return json.dumps(dataFunctions.saveRecords(flask.request.form),  cls=JSONEncoder)
 
 # GET THE RECORDS OF A USER WITH FILTER (from querystring)
 @app.route('/user/<id>/record/')
 def getUserRecords(id):
+    # TODO: only when logged in (get id from auth)
     filter = {
         'day': flask.request.args.get('day'),
         'month': flask.request.args.get('month'),

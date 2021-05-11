@@ -38,8 +38,8 @@
 							"type": "text"
 						},
 						{
-							"key": "name",
-							"value": "Sarah",
+							"key": "password",
+							"value": "test1234",
 							"type": "text"
 						},
 						{
@@ -94,12 +94,12 @@
 					"formdata": [
 						{
 							"key": "html",
-							"value": "<!DOCTYPE html>\n<html>\n<body>\n\n<h1>My First Heading</h1>\n<p>My first paragraph.</p>\n<p>My second paragraph.</p>\n\n</body>\n</html>",
+							"value": "<!DOCTYPE html>\n<html>\n<body>\n\n<h3>Gelukkige verjaardag!</h3>\n<h3>Verdomme, ik ben toch zo'n ontzettende idioot!</h3>\n<h3>Vandaag is de beste dag in mijn hele leven.</h3>\n\n</body>\n</html>",
 							"type": "text"
 						},
 						{
 							"key": "source",
-							"value": "facebook",
+							"value": "reddit",
 							"type": "text"
 						}
 					]
@@ -149,6 +149,35 @@
 						{
 							"key": "year",
 							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/login?password=test1234&email=sarah@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "password",
+							"value": "test1234"
+						},
+						{
+							"key": "email",
+							"value": "sarah@gmail.com"
 						}
 					]
 				}
