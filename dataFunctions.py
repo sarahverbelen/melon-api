@@ -1,11 +1,8 @@
-from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 
 import mongo
-import validation
 import record
 import auth
-from errors import NotFoundException, UnauthorizedException
 
 def saveRecords(object, auth_header):
 		userId = auth.checkAuth(auth_header)
@@ -28,7 +25,7 @@ def saveRecord(html, source, userId):
 		'userId': userId,
 		'createdAt': datetime.now()
 	}
-	mongo.db.records.insert_one(newRecord)
+	# mongo.db.records.insert_one(newRecord)
 	return newRecord
 
 def getUserRecords(filter, auth_header):

@@ -7,7 +7,8 @@ You can find the Postman collection for this api in the `/docs` folder.
 
 ## How to run the API
 1. If you don't have python installed, [you can download the latest version here](https://www.python.org/downloads/)
-2. `python server.py`: starts a development build of the api on `http://localhost:5000`
+2. To install the requirements, run `python -m pip install -r requirements.txt`
+3. `python server.py`: starts a development build of the api on `http://localhost:5000`
 
 
 ## Contributors
@@ -24,3 +25,5 @@ You can find the Postman collection for this api in the `/docs` folder.
 * [Flask Bcrypt](https://flask-bcrypt.readthedocs.io/en/0.7.1/)
 * [Token based authentication with flask](https://realpython.com/token-based-authentication-with-flask/)
 * [PyJWT](https://pyjwt.readthedocs.io/en/latest/)
+* [Automated Python Keywords Extraction: TextRank vs Rake](https://programmerbackpack.com/automated-python-keywords-extraction-textrank-vs-rake/)
+* [Gensim](https://radimrehurek.com/gensim/)

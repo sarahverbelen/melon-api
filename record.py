@@ -1,6 +1,6 @@
 # this file will split the data into seperate records and then analyse these records based on our ai model
 from bs4 import BeautifulSoup
-import random
+from gensim.summarization import keywords
 import re
 
 def split(html, source):
@@ -45,8 +45,9 @@ def analyse(html):
 	return sentiment
 
 def analyseKeywords(html):
-	# TODO: analysis of keywords
-	return ['test', 'test2', 'test3']
+	text = html.get_text()
+	result = keywords(text).split('\n')
+	return result
 
 def analyseEmotion(html):
 	# TODO: analysis of emotion

@@ -5,3 +5,4 @@ flask_cors
 bcrypt
 pymongo
 werkzeug
+gensim==3.8.3

@@ -4,7 +4,7 @@ import datetime
 
 import mongo
 import validation
-from errors import NotFoundException, WrongPasswordException
+from errors import NotFoundException, WrongPasswordException, UnauthorizedException
 
 def register(object, bcrypt):
 	user = object.to_dict()
@@ -62,7 +62,6 @@ def decodeAuthToken(auth_token):
 
 def checkAuth(auth_header):
 	if auth_header:
-		auth_token = auth_header.split(".")[1]
 		userId = decodeAuthToken(auth_header)
 		return userId
 	else:
