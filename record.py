@@ -26,6 +26,10 @@ def split(html, source):
 				else:
 					posts.append(span.text)
 
+	# print(posts)
+	# filter out duplicates
+	posts = list(dict.fromkeys(posts))
+
 	return posts
 
 def analyse(text):
