@@ -9,25 +9,32 @@ def split(html, source):
 	posts = []
 
 	if source == 'reddit':
-		posts = soup.find_all('h3')
+		for h3 in soup.find_all('h3'):
+			posts.append(h3.text)
 	if source == 'twitter':
 		allPosts = soup.find_all('span')
 		for post in allPosts:
 			if len(post.text) > 20:
-				posts.append(post)
+				posts.append(post.text)
 	if source == 'facebook': # TODO
-		print(html)
-		
+		# for div in soup.find_all("script"):
+		# 	div.decompose()
+		for span in soup.find_all('span'):
+			if len(span.text) > 35:
+				if 'Advertentievoorkeuren' in span.text or 'Gesponsord' in span.text:
+					span.decompose()
+				else:
+					posts.append(span.text)
+
 	return posts
 
-def analyse(html):
+def analyse(text):
 	# load the list of words 
 	# (English found here: https://finnaarupnielsen.wordpress.com/2011/03/16/afinn-a-new-word-list-for-sentiment-analysis/
 	#  Dutch translated by me)
 	afinn = dict()
 	for line in open("AFINN-111.txt"):
 		afinn[line.split('\t')[0]] = line.split('\t')[1]
-	text = html.get_text()
 	# do the analysis
 	analysis = 0
 	textWithoutPunctuation = re.sub(r'[^\w\s]', '', text)
@@ -37,18 +44,17 @@ def analyse(html):
 			analysis = int(analysis) + int(value)
 	# collapse the number into 1, 0 or -1
 	sentiment = 0
-	# print(textWithoutPunctuation, analysis)
+	print(textWithoutPunctuation, analysis)
 	if analysis > 1:
 		sentiment = 1
 	if analysis < -1:
 		sentiment = -1
 	return sentiment
 
-def analyseKeywords(html):
-	text = html.get_text()
+def analyseKeywords(text):
 	result = keywords(text).split('\n')
 	return result
 
-def analyseEmotion(html):
+def analyseEmotion(text):
 	# TODO: analysis of emotion
 	return 'happy'
