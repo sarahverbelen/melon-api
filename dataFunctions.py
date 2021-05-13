@@ -11,22 +11,28 @@ def saveRecords(object, auth_header):
 
 		records = []
 		for post in record.split(html, source):
-			records.append(saveRecord(post, source, userId))
+			savedRecord = saveRecord(post, source, userId)
+			if savedRecord != '':
+				records.append(savedRecord)
 
 		return records
 
 
 def saveRecord(html, source, userId):
-	newRecord = {
-		'sentiment': record.analyse(html),
-		'keywords': record.analyseKeywords(html),
-		'emotion': record.analyseEmotion(html),
-		'source': source,
-		'userId': userId,
-		'createdAt': datetime.now()
-	}
-	# mongo.db.records.insert_one(newRecord)
-	return newRecord
+	sentiment = record.analyse(html)
+	if sentiment != 0: # we'll only save the post if it is not neutral (to no overload the db...)
+		newRecord = {
+			'sentiment': sentiment,
+			'keywords': record.analyseKeywords(html),
+			'emotion': record.analyseEmotion(html),
+			'source': source,
+			'userId': userId,
+			'createdAt': datetime.now()
+		}
+		mongo.db.records.insert_one(newRecord)
+		return newRecord
+	else:
+		return ''
 
 def getUserRecords(filter, auth_header):
 	id = auth.checkAuth(auth_header)
