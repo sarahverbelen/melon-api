@@ -12,9 +12,37 @@ def register(object, bcrypt):
 	if validation.checkPassword(user) and validation.checkEmail(user):
 		# hash the password
 		user['password'] = bcrypt.generate_password_hash(user['password'])
+		settings = {
+			'facebook': True,
+			'reddit': True,
+			'twitter': True,
+			'colorblind': False
+		}
+		user['settings'] = settings
 		# save to database
 		userId = mongo.db.users.insert_one(user).inserted_id
 		return encodeAuthToken(userId)
+
+def editSettings(object, auth_header):
+	settings = object.to_dict()
+	userId = checkAuth(auth_header)
+	mongo.db.users.update_one({'_id': ObjectId(userId)}, {
+		'$set': {'settings': settings}
+	})
+	return 'ok'
+
+def getMe(auth_header):
+	userId = checkAuth(auth_header)
+	user = mongo.db.users.find_one({'_id': ObjectId(userId)})
+	if user is None:
+		raise NotFoundException()
+	else:
+		userObject = {
+				'settings': user['settings'],
+				'email': user['email']
+			}
+		return userObject
+
 
 def getUserById(id):
 	# TODO: only for admin users (or one specific admin user at least)

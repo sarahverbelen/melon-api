@@ -57,7 +57,7 @@ def saveRecord():
     return json.dumps(dataFunctions.saveRecords(flask.request.form, auth_header),  cls=JSONEncoder)
 
 # GET THE RECORDS OF A USER WITH FILTER (from querystring)
-@app.route('/record/')
+@app.route('/record/', methods=['GET'])
 def getUserRecords():
     auth_header = flask.request.headers.get('Authorization')
     filter = {
@@ -75,5 +75,17 @@ def getUserRecords():
     # if time is 'alltime', it will give the results for alltime
     # the number in 'pastweek' determines how many weeks in the past the api will return
     return json.dumps(dataFunctions.getUserRecords(filter, auth_header),  cls=JSONEncoder)
+
+# CHANGE THE SETTINGS
+@app.route('/settings', methods=['POST'])
+def changeSettings():
+    auth_header = flask.request.headers.get('Authorization')
+    return auth.editSettings(flask.request.form, auth_header)
+
+# GET THE CURRENT USER
+@app.route('/me', methods=['GET'])
+def getMe():
+    auth_header = flask.request.headers.get('Authorization')
+    return auth.getMe(auth_header)
 
 app.run()
