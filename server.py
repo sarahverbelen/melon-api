@@ -88,4 +88,10 @@ def getMe():
     auth_header = flask.request.headers.get('Authorization')
     return auth.getMe(auth_header)
 
+# DELETE THE CURRENT USER
+@app.route('/me/delete', methods=['GET'])
+def deleteMe():
+    auth_header = flask.request.headers.get('Authorization')
+    return auth.deleteUser(auth_header)
+
 app.run()

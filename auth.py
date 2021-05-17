@@ -52,6 +52,12 @@ def getUserById(id):
 	else:
 		return user
 
+def deleteUser(auth_header):
+	userId = checkAuth(auth_header)
+	mongo.db.records.delete_many({'userId': userId})
+	mongo.db.users.delete_one({'_id': ObjectId(userId)})
+	return 'ok'
+
 def login(user, bcrypt):
 	 # check if email and password are valid
 	if validation.checkPassword(user) and validation.checkEmail(user):
