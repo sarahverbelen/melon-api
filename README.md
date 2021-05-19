@@ -8,7 +8,7 @@ You can find the Postman collection for this api in the `/docs` folder.
 ## How to run the API
 1. If you don't have python installed, [you can download the latest version here](https://www.python.org/downloads/)
 2. To install the requirements, run `python -m pip install -r requirements.txt`
-3. `python server.py`: starts a development build of the api on `http://localhost:5000`
+3. `python app.py`: starts a development build of the api on `http://localhost:5000`
 
 
 ## Contributors
@@ -27,3 +27,5 @@ You can find the Postman collection for this api in the `/docs` folder.
 * [PyJWT](https://pyjwt.readthedocs.io/en/latest/)
 * [Automated Python Keywords Extraction: TextRank vs Rake](https://programmerbackpack.com/automated-python-keywords-extraction-textrank-vs-rake/)
 * [Gensim](https://radimrehurek.com/gensim/)
+* [Heroku](https://dashboard.heroku.com/)
+* [Creating and deploying restful API using Python and Heroku](https://medium.com/incresco/how-i-have-created-and-deployed-restful-api-using-python-and-heroku-step-by-step-guide-5b9612e6a532)
