@@ -94,4 +94,5 @@ def deleteMe():
     auth_header = flask.request.headers.get('Authorization')
     return auth.deleteUser(auth_header)
 
-app.run()
+if __name__ == '__main__':
+    app.run()
