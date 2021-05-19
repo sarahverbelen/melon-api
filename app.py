@@ -16,6 +16,7 @@ from errors import NoEmailException
 
 app = flask.Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 bcrypt = Bcrypt(app)
 app.config["DEBUG"] = True
 
