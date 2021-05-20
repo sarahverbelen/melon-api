@@ -98,18 +98,21 @@ def countRecords(records, time):
 		'websiteCount': {
 			'facebook': {
 				'positive': 0,
-				'neutral': 0,
-				'negative': 0
+				'positiveKeywords': {},
+				'negative': 0,
+				'negativeKeywords': {}
 			},
 			'reddit': {
 				'positive': 0,
-				'neutral': 0,
-				'negative': 0
+				'positiveKeywords': {},
+				'negative': 0,
+				'negativeKeywords': {}
 			},
 			'twitter': {
 				'positive': 0,
-				'neutral': 0,
-				'negative': 0
+				'positiveKeywords': {},
+				'negative': 0,
+				'negativeKeywords': {}
 			}
 		}
 	}
@@ -136,23 +139,29 @@ def countRecords(records, time):
 					'count': 0,
 					'negativeCount': 0,
 					'positiveCount': 0,
-					'neutralCount': 0
 				}
 			result['keywordCount'][word]['count'] += 1
-			if record['sentiment'] == 0:
-				result['keywordCount'][word]['neutralCount'] += 1
 			if record['sentiment'] == -1:
 				result['keywordCount'][word]['negativeCount'] += 1
+				if word not in result['websiteCount'][record['source']]['negativeKeywords']:
+					result['websiteCount'][record['source']]['negativeKeywords'][word] = {
+						'count': 0
+					}
+				result['websiteCount'][record['source']]['negativeKeywords'][word]['count'] +=1
 			if record['sentiment'] == 1:
 				result['keywordCount'][word]['positiveCount'] += 1
+				if word not in result['websiteCount'][record['source']]['positiveKeywords']:
+					result['websiteCount'][record['source']]['positiveKeywords'][word] = {
+						'count': 0
+					}
+				result['websiteCount'][record['source']]['positiveKeywords'][word]['count'] +=1
 
 		# WEBSITES
-		if record['sentiment'] == 0:
-			result['websiteCount'][record['source']]['neutral'] += 1
 		if record['sentiment'] == -1:
 			result['websiteCount'][record['source']]['negative'] += 1
 		if record['sentiment'] == 1:
 			result['websiteCount'][record['source']]['positive'] += 1
+
 
 		# WEEK: SEPERATED BY DAY
 		if time == 'week':
