@@ -4,24 +4,28 @@ import datetime
 
 import mongo
 import validation
-from errors import NotFoundException, WrongPasswordException, UnauthorizedException
+from errors import NotFoundException, WrongPasswordException, UnauthorizedException, ExistingUserException
 
 def register(object, bcrypt):
 	user = object.to_dict()
 	# check validation
 	if validation.checkPassword(user) and validation.checkEmail(user):
-		# hash the password
-		user['password'] = bcrypt.generate_password_hash(user['password'])
-		settings = {
-			'facebook': True,
-			'reddit': True,
-			'twitter': True,
-			'colorblind': False
-		}
-		user['settings'] = settings
-		# save to database
-		userId = mongo.db.users.insert_one(user).inserted_id
-		return encodeAuthToken(userId)
+		# check if the user doesn't already exist
+		if(mongo.db.users.find_one({'email': user['email']}) == None):
+			# hash the password
+			user['password'] = bcrypt.generate_password_hash(user['password'])
+			settings = {
+				'facebook': True,
+				'reddit': True,
+				'twitter': True,
+				'colorblind': False
+			}
+			user['settings'] = settings
+			# save to database
+			userId = mongo.db.users.insert_one(user).inserted_id
+			return encodeAuthToken(userId)
+		else:
+			raise ExistingUserException()
 
 def editSettings(object, auth_header):
 	settings = object.to_dict()

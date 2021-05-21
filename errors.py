@@ -20,6 +20,10 @@ class InvalidEmailException(werkzeug.exceptions.HTTPException):
     code = 400
     description = 'Email is invalid'
 
+class ExistingUserException(werkzeug.exceptions.HTTPException):
+    code = 409
+    description = 'This emailadres is already in use'
+
 class NotFoundException(werkzeug.exceptions.HTTPException):
     code = 404
     description = 'Requested resource was not found'
