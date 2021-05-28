@@ -56,7 +56,12 @@ def analyse(text):
 	return sentiment
 
 def analyseKeywords(text):
-	result = keywords(text).split('\n')
+	meaninglessWords = ['met', 'uit', 'heeft', 'meer', 'tot', 'een', 'van', 'of', 'dit', 'dat', 'de', 'het', 'en', 'immers', 'omdat', 'daarom', 'omdat', 'namelijk', 'daardoor', 'doordat', 'ten', 'vervolgens', 'hierna', 'echter', 'maar', 'enerzijds', 'anderzijds', 'toch', 'omdat', 'want', 'hierdoor', 'aangezien', 'bijvoorbeeld', 'ter', 'kortom']
+	temporaryResult = keywords(text).split('\n')
+	result = []
+	for word in temporaryResult:
+		if word not in meaninglessWords:
+			result.append(word)
 	return result
 
 def analyseEmotion(text):
