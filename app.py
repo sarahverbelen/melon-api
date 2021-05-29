@@ -27,32 +27,28 @@ class JSONEncoder(json.JSONEncoder): # found here https://stackoverflow.com/ques
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Melon API</h1>"
-
-@app.route('/test', methods=['GET'])
-def test():
-	return json.dumps(mongo.db.users.find_one(), cls=JSONEncoder)
+    return "<h1>Melon API</h1>", 200
 
 # REGISTER
 @app.route('/register', methods=['POST'])
 def save():
     res = make_response(auth.register(flask.request.form, bcrypt))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # LOGIN
 @app.route('/login', methods=['POST'])
 def login():
     res = make_response(auth.login(flask.request.form, bcrypt))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # GET USER BY ID
 @app.route('/user/<id>', methods=['GET'])
 def getUserById(id):
     res = make_response(json.dumps(auth.getUserById(id),  cls=JSONEncoder))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # SAVE RECORDS
 @app.route('/record', methods=['POST'])
@@ -60,7 +56,7 @@ def saveRecord():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(json.dumps(dataFunctions.saveRecords(flask.request.form, auth_header),  cls=JSONEncoder))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # GET THE RECORDS OF A USER WITH FILTER (from querystring)
 @app.route('/record/', methods=['GET'])
@@ -82,7 +78,7 @@ def getUserRecords():
     # the number in 'pastweek' determines how many weeks in the past the api will return
     res = make_response(json.dumps(dataFunctions.getUserRecords(filter, auth_header),  cls=JSONEncoder))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # CHANGE THE SETTINGS
 @app.route('/settings', methods=['POST'])
@@ -90,7 +86,7 @@ def changeSettings():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.editSettings(flask.request.form, auth_header))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # GET THE CURRENT USER
 @app.route('/me', methods=['GET'])
@@ -98,7 +94,7 @@ def getMe():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.getMe(auth_header))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 # DELETE THE CURRENT USER
 @app.route('/me/delete', methods=['GET'])
@@ -106,7 +102,7 @@ def deleteMe():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.deleteUser(auth_header))
     res.headers.add('Access-Control-Allow-Origin', '*')
-    return res
+    return res, 200
 
 if __name__ == '__main__':
     app.run()
