@@ -20,9 +20,8 @@ app.config["DEBUG"] = True
 
 white = ['http://melonproject.be',"chrome-extension://fdcoolfboghoepcadhhmggjjehejiaie"]
 
-@app.after_request
-def add_cors_headers(response): # found here https://stackoverflow.com/questions/42681311/flask-access-control-allow-origin-for-multiple-urls
-    r = flask.request.referrer[:-1]
+def add_cors_headers(request, response): # found here https://stackoverflow.com/questions/42681311/flask-access-control-allow-origin-for-multiple-urls
+    r = request.referrer[:-1]
     if r in white:
         response.headers.add('Access-Control-Allow-Origin', r)
         response.headers.add('Access-Control-Allow-Credentials', 'true')
@@ -42,12 +41,15 @@ class JSONEncoder(json.JSONEncoder): # found here https://stackoverflow.com/ques
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Melon API</h1>", 200
+    res = make_response("<h1>Melon API</h1>")
+    res = add_cors_headers(flask.request, res)
+    return res, 200
 
 # REGISTER
 @app.route('/register', methods=['POST'])
 def save():
     res = make_response(auth.register(flask.request.form, bcrypt))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', )
     return res, 200
 
@@ -55,6 +57,7 @@ def save():
 @app.route('/login', methods=['POST'])
 def login():
     res = make_response(auth.login(flask.request.form, bcrypt))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -62,6 +65,7 @@ def login():
 @app.route('/user/<id>', methods=['GET'])
 def getUserById(id):
     res = make_response(json.dumps(auth.getUserById(id),  cls=JSONEncoder))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -70,6 +74,7 @@ def getUserById(id):
 def saveRecord():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(json.dumps(dataFunctions.saveRecords(flask.request.form, auth_header),  cls=JSONEncoder))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -92,6 +97,7 @@ def getUserRecords():
     # if time is 'alltime', it will give the results for alltime
     # the number in 'pastweek' determines how many weeks in the past the api will return
     res = make_response(json.dumps(dataFunctions.getUserRecords(filter, auth_header),  cls=JSONEncoder))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -100,6 +106,7 @@ def getUserRecords():
 def changeSettings():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.editSettings(flask.request.form, auth_header))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -108,6 +115,7 @@ def changeSettings():
 def getMe():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.getMe(auth_header))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
@@ -116,6 +124,7 @@ def getMe():
 def deleteMe():
     auth_header = flask.request.headers.get('Authorization')
     res = make_response(auth.deleteUser(auth_header))
+    res = add_cors_headers(flask.request, res)
     # res.headers.add('Access-Control-Allow-Origin', 'http://melonproject.be')
     return res, 200
 
