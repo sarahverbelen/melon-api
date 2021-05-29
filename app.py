@@ -18,7 +18,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 bcrypt = Bcrypt(app)
 app.config["DEBUG"] = True
 
-white = ['http://melonproject.be',"chrome-extension://fdcoolfboghoepcadhhmggjjehejiaie"]
+white = ['http://melonproject.be','chrome-extension://fdcoolfboghoepcadhhmggjjehejiaie', 'https://www.facebook.com', 'https://www.reddit.com', 'https://twitter.com']
 
 def add_cors_headers(request, response): # found here https://stackoverflow.com/questions/42681311/flask-access-control-allow-origin-for-multiple-urls
     r = request.referrer
