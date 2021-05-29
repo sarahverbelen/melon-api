@@ -13,7 +13,7 @@ import mongo
 import auth
 
 app = flask.Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://melonproject.be/"}})
+CORS(app, resources={r"/*": {"origins": "http://melonproject.be/"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 bcrypt = Bcrypt(app)
 app.config["DEBUG"] = True
