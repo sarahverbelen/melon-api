@@ -13,7 +13,7 @@ import mongo
 import auth
 
 # whitelist of urls that can access the api
-white = ['http://melonproject.be', 'chrome-extension://fdcoolfboghoepcadhhmggjjehejiaie', 'https://www.facebook.com', 'https://www.reddit.com', 'https://twitter.com', 'http://localhost:3000']
+white = ['http://melonproject.be', 'chrome-extension://*', 'https://www.facebook.com', 'https://www.reddit.com', 'https://twitter.com', 'http://localhost:3000']
 
 app = flask.Flask(__name__)
 CORS(app, resources={r"/*": {"origins": white}})
