@@ -21,7 +21,7 @@ app.config["DEBUG"] = True
 white = ['http://melonproject.be',"chrome-extension://fdcoolfboghoepcadhhmggjjehejiaie"]
 
 def add_cors_headers(request, response): # found here https://stackoverflow.com/questions/42681311/flask-access-control-allow-origin-for-multiple-urls
-    r = request.referrer[:-1]
+    r = request.referrer[0]
     if r in white:
         response.headers.add('Access-Control-Allow-Origin', r)
         response.headers.add('Access-Control-Allow-Credentials', 'true')
