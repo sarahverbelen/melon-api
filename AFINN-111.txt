@@ -2870,7 +2870,6 @@ dysfunctioneel	-2
 eenduidig	1
 eenzaam	-2
 eer	2
-eerlijk
 eerlijk	2
 effectief	2
 eikel	-4
