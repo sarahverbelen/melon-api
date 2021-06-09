@@ -3171,7 +3171,7 @@ hebzucht	-3
 hebzuchtig	-2
 heimwee	-2
 hekel aan	-2
-hel -4
+hel	-4
 helaas	-1
 held	2
 helden	2
