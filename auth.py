@@ -79,7 +79,7 @@ def login(user, bcrypt):
 
 def encodeAuthToken(id):
 	payload = {
-		'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+		'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
 		'iat': datetime.datetime.utcnow(),
 		'sub': str(id)
 	}
